@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Conteúdos Pilates</title>
+    
+    <style>
+        /* Estilos Básicos da Página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* --- Estilos do Botão de Voltar --- */
+        .back-button {
+            display: inline-block;
+            margin-left: 20px; 
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #555; 
+            color: white; 
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        .back-button:hover {
+            background-color: #777; 
+            transform: translateY(-1px);
+        }
+
+        /* Container da Galeria (Flexbox) */
+        .gallery-container {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 20px; 
+            justify-content: center; 
+            max-width: 1200px; 
+            margin: 0 auto;
+        }
+
+        /* Card Individual da Imagem */
+        .image-card {
+            flex: 1 1 300px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            background-color: #fff;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Link (Âncora) */
+        .image-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Imagem */
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            border-bottom: 3px solid #007bff;
+        }
+
+        .image-card p {
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        /* --- Media Queries para Responsividade --- */
+
+        /* 1. Telas de Tablet (2 colunas) */
+        @media (max-width: 768px) {
+            .gallery-container {
+                gap: 15px;
+            }
+
+            .image-card {
+                flex: 1 1 calc(50% - 10px); 
+            }
+        }
+
+        /* 2. Telas de Celular (1 coluna) */
+        @media (max-width: 480px) {
+            .image-card {
+                flex: 1 1 100%;
+            }
+            /* O botão se ajusta para telas menores */
+            .back-button {
+                margin-left: 0; 
+                width: calc(100% - 30px); 
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <a href="https://zeus-rr.github.io/Nine/" class="back-button">
+        &larr; Voltar à Página Principal
+    </a>
+
+    <h1>Minha Galeria de Imagens Responsiva</h1>
+    
+    <div class="gallery-container">
+        
+        <div class="image-card">
+            <a href="Pilates.pdf" class="image-link" target="_blank">
+                <img src="Pilates.jpeg" alt="Pessoa praticando Pilates no Mat">
+                <p>Acesse o Conteúdo 1</p>
+            </a>
+        </div>
+
+        <div class="image-card">
+            <a href="Step.pdf" class="image-link" target="_blank">
+                <img src="Pilates2.jpeg" alt="Equipamento de Pilates Reformer">
+                <p>Acesse o Conteúdo 2</p>
+            </a>
+        </div>
+
+        <div class="image-card">
+            <a href="Slides.pdf" class="image-link" target="_blank">
+                <img src="Pilates3.jpeg" alt="Série de exercícios de alongamento">
+                <p>Acesse o Conteúdo 3</p>
+            </a>
+        </div>
+        
+    </div>
+
+    <p style="text-align: center; margin-top: 30px; color: #555;">
+        Clique nas imagens para acessar os documentos.
+    </p>
+
+</body>
+</html>
