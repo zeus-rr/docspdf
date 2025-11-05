@@ -3,154 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeria de Conteúdos Pilates</title>
-    
+    <title>Biblioteca Online</title>
     <style>
-        /* Estilos Básicos da Página */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f9;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.4s, color 0.4s;
         }
 
-        h1 {
+        :root {
+            --bg-color: #f4f4f8;
+            --text-color: #333;
+            --card-bg: #fff;
+            --primary: #2b2d42;
+            --secondary: #1c1e33;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #e5e5e5;
+            --card-bg: #1e1e1e;
+            --primary: #3a3d61;
+            --secondary: #585b8a;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 1rem 2rem;
             text-align: center;
-            color: #333;
-            margin-bottom: 30px;
+            position: relative;
         }
 
-        /* --- Estilos do Botão de Voltar --- */
-        .back-button {
-            display: inline-block;
-            margin-left: 20px; 
-            margin-bottom: 20px;
-            padding: 10px 15px;
-            background-color: #555; 
-            color: white; 
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.1s ease;
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
         }
 
-        .back-button:hover {
-            background-color: #777; 
-            transform: translateY(-1px);
+        /* Botão de tema */
+        #theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
-        /* Container da Galeria (Flexbox) */
-        .gallery-container {
-            display: flex;
-            flex-wrap: wrap; 
-            gap: 20px; 
-            justify-content: center; 
-            max-width: 1200px; 
-            margin: 0 auto;
+        .search-bar {
+            margin: 1rem auto;
+            text-align: center;
         }
 
-        /* Card Individual da Imagem */
-        .image-card {
-            flex: 1 1 300px; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .search-bar input {
+            width: 90%;
+            max-width: 400px;
+            padding: 0.6rem;
             border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 1rem;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .library {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .book {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             overflow: hidden;
-            transition: transform 0.3s ease;
-            background-color: #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .image-card:hover {
-            transform: translateY(-5px); 
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        .book:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
         }
 
-        /* Link (Âncora) */
-        .image-link {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /* Imagem */
-        .image-card img {
+        .book img {
             width: 100%;
-            height: auto;
-            display: block;
+            height: 300px;
             object-fit: cover;
-            border-bottom: 3px solid #007bff;
         }
 
-        .image-card p {
+        .book-info {
+            padding: 1rem;
             text-align: center;
-            padding: 10px;
-            margin: 0;
-            color: #007bff;
-            font-weight: bold;
         }
 
-        /* --- Media Queries para Responsividade --- */
-
-        /* 1. Telas de Tablet (2 colunas) */
-        @media (max-width: 768px) {
-            .gallery-container {
-                gap: 15px;
-            }
-
-            .image-card {
-                flex: 1 1 calc(50% - 10px); 
-            }
+        .book-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
         }
 
-        /* 2. Telas de Celular (1 coluna) */
-        @media (max-width: 480px) {
-            .image-card {
-                flex: 1 1 100%;
-            }
-            /* O botão se ajusta para telas menores */
-            .back-button {
-                margin-left: 0; 
-                width: calc(100% - 30px); 
-                text-align: center;
-            }
+        .book-info button {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .book-info button:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Leitor */
+        #reader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #reader iframe {
+            width: 90%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        #close-btn {
+            background-color: #ef233c;
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        #close-btn:hover {
+            background-color: #d90429;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: #fff;
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
-    
-    <a href="https://zeus-rr.github.io/Nine/" class="back-button">
+ <a href="https://zeus-rr.github.io/Nine/" class="back-button">
         &larr; Voltar à Página Principal
     </a>
 
-    <h1>Minha Galeria de Imagens Responsiva</h1>
-    
-    <div class="gallery-container">
-        
-        <div class="image-card">
-            <a href="Pilates.pdf" class="image-link" target="_blank">
-                <img src="Pilates.jpeg" alt="Pessoa praticando Pilates no Mat">
-                <p>Acesse o Conteúdo 1</p>
-            </a>
-        </div>
+    <header>
+        <h1>📚 Biblioteca Online Profª Jaqueline</h1>
+        <button id="theme-toggle">🌙</button>
+        <p>Leia seus livros favoritos sem precisar baixar</p>
+    </header>
 
-        <div class="image-card">
-            <a href="Step.pdf" class="image-link" target="_blank">
-                <img src="Pilates2.jpeg" alt="Equipamento de Pilates Reformer">
-                <p>Acesse o Conteúdo 2</p>
-            </a>
-        </div>
-
-        <div class="image-card">
-            <a href="Slides.pdf" class="image-link" target="_blank">
-                <img src="Pilates3.jpeg" alt="Série de exercícios de alongamento">
-                <p>Acesse o Conteúdo 3</p>
-            </a>
-        </div>
-        
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Buscar livro...">
     </div>
 
-    <p style="text-align: center; margin-top: 30px; color: #555;">
-        Clique nas imagens para acessar os documentos.
-    </p>
+    <section class="library" id="library">
+        <div class="book">
+            <img src="https://m.media-amazon.com/images/I/81af+MCATTL.jpg" alt="Livro 1">
+            <div class="book-info">
+                <h3>O Pequeno Príncipe</h3>
+                <button onclick="openReader('https://example.com/livro1.pdf')">Ler Agora</button>
+            </div>
+        </div>
+
+        <div class="book">
+            <img src="https://m.media-amazon.com/images/I/71aFt4+OTOL.jpg" alt="Livro 2">
+            <div class="book-info">
+                <h3>1984</h3>
+                <button onclick="openReader('https://example.com/livro2.pdf')">Ler Agora</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leitor -->
+    <div id="reader">
+        <iframe id="reader-frame" src=""></iframe>
+        <button id="close-btn" onclick="closeReader()">Fechar</button>
+    </div>
+
+    <footer>
+        <p>© Profª Jaque | Desenvolvido por Rafael Rodrigues com ❤️</p>
+    </footer>
+
+    <script>
+        // Função de busca
+        const searchInput = document.getElementById('search');
+        const books = document.querySelectorAll('.book');
+
+        searchInput.addEventListener('keyup', function() {
+            const value = this.value.toLowerCase();
+            books.forEach(book => {
+                const title = book.querySelector('h3').textContent.toLowerCase();
+                book.style.display = title.includes(value) ? '' : 'none';
+            });
+        });
+
+        // Leitor
+        const reader = document.getElementById('reader');
+        const readerFrame = document.getElementById('reader-frame');
+
+        function openReader(url) {
+            readerFrame.src = url;
+            reader.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReader() {
+            readerFrame.src = '';
+            reader.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Tema escuro / claro
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Carrega tema salvo
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.textContent = '🌞';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            toggleBtn.textContent = isDark ? '🌞' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+    </script>
 
 </body>
 </html>
